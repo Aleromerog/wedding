@@ -1,0 +1,446 @@
+/* ============================================================
+   Reset & Base
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --gold: #c9a96e;
+  --gold-light: #e8d5b0;
+  --dark: #0a0a0a;
+  --cream: #f5f0e8;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Montserrat', sans-serif;
+  --transition-slide: 1s cubic-bezier(0.77, 0, 0.18, 1);
+  --transition-fade: 0.6s ease;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--dark);
+  color: var(--cream);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   Intro Overlay
+   ============================================================ */
+#intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: introFadeOut 1s ease 3.2s forwards;
+  pointer-events: none;
+}
+
+.intro-content {
+  text-align: center;
+  animation: introReveal 1s ease 0.3s both;
+}
+
+.intro-date {
+  font-family: var(--font-sans);
+  font-weight: 200;
+  font-size: clamp(0.65rem, 1.5vw, 0.85rem);
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.2rem;
+  opacity: 0.9;
+}
+
+.intro-title {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(3rem, 9vw, 7rem);
+  letter-spacing: 0.05em;
+  line-height: 1;
+  color: var(--cream);
+}
+
+.intro-divider {
+  width: 60px;
+  height: 1px;
+  background: var(--gold);
+  margin: 1.8rem auto;
+  opacity: 0.7;
+  animation: dividerExpand 0.8s ease 1s both;
+}
+
+.intro-sub {
+  font-family: var(--font-sans);
+  font-weight: 200;
+  font-size: clamp(0.6rem, 1.2vw, 0.75rem);
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  opacity: 0.7;
+}
+
+@keyframes introReveal {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dividerExpand {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+
+  to {
+    width: 60px;
+    opacity: 0.7;
+  }
+}
+
+@keyframes introFadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* ============================================================
+   Carousel
+   ============================================================ */
+#carousel {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0;
+  animation: carouselReveal 1.2s ease 3.6s forwards;
+}
+
+@keyframes carouselReveal {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Slides wrapper */
+#slides-wrapper {
+  position: absolute;
+  inset: 0;
+}
+
+/* Individual slide */
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--transition-fade);
+  background-color: var(--dark);
+}
+
+.slide.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+/* Blurred background layer */
+.slide-bg {
+  position: absolute;
+  inset: -30px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(22px) brightness(0.32);
+  transform: scale(1.06);
+  animation: kenBurns 14s ease-in-out infinite alternate;
+  z-index: 0;
+}
+
+/* Main photo — fully visible, no cropping */
+.slide-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  z-index: 1;
+  /* Subtle drop shadow to lift photo from blurred bg */
+  filter: drop-shadow(0 4px 32px rgba(0, 0, 0, 0.55));
+}
+
+@keyframes kenBurns {
+  from {
+    transform: scale(1.00) translateX(0px);
+  }
+
+  to {
+    transform: scale(1.06) translateX(-8px);
+  }
+}
+
+/* Gradients */
+.gradient-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 35%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55) 0%, transparent 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.gradient-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ============================================================
+   Title Overlay
+   ============================================================ */
+.carousel-title {
+  position: absolute;
+  bottom: 5rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.carousel-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
+.carousel-title-main {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.4rem, 3.5vw, 2.6rem);
+  color: var(--cream);
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.carousel-title-dot {
+  color: var(--gold);
+  font-size: clamp(1rem, 2vw, 1.6rem);
+  opacity: 0.8;
+}
+
+.carousel-title-date {
+  font-family: var(--font-sans);
+  font-weight: 200;
+  font-size: clamp(0.6rem, 1.3vw, 0.85rem);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  opacity: 0.85;
+  align-self: flex-end;
+  margin-bottom: 0.3rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.carousel-subtitle {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(0.75rem, 1.6vw, 1.05rem);
+  color: var(--gold-light);
+  letter-spacing: 0.12em;
+  opacity: 0.75;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  margin-top: 0.2rem;
+}
+
+/* ============================================================
+   Navigation Buttons
+   ============================================================ */
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: clamp(42px, 5vw, 56px);
+  height: clamp(42px, 5vw, 56px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
+  opacity: 0.6;
+}
+
+.nav-btn svg {
+  width: 45%;
+  height: 45%;
+}
+
+.nav-btn:hover {
+  opacity: 1;
+  background: rgba(201, 169, 110, 0.15);
+  border-color: rgba(201, 169, 110, 0.6);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.nav-btn:active {
+  transform: translateY(-50%) scale(0.97);
+}
+
+#btn-prev {
+  left: clamp(1rem, 3vw, 2.5rem);
+}
+
+#btn-next {
+  right: clamp(1rem, 3vw, 2.5rem);
+}
+
+/* ============================================================
+   Counter
+   ============================================================ */
+.counter {
+  position: absolute;
+  top: 1.8rem;
+  right: clamp(1rem, 3vw, 2.5rem);
+  z-index: 10;
+  font-family: var(--font-sans);
+  font-weight: 200;
+  font-size: clamp(0.6rem, 1.1vw, 0.75rem);
+  letter-spacing: 0.25em;
+  color: rgba(255, 255, 255, 0.55);
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
+}
+
+.counter-sep {
+  opacity: 0.4;
+}
+
+/* ============================================================
+   Dot Indicators
+   ============================================================ */
+.dots {
+  position: absolute;
+  bottom: 2.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.3s ease, transform 0.3s ease, width 0.3s ease;
+}
+
+.dot.active {
+  background: var(--gold);
+  transform: scale(1.2);
+  width: 18px;
+  border-radius: 3px;
+}
+
+/* ============================================================
+   No Photos Fallback
+   ============================================================ */
+.no-photos {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--dark);
+  z-index: 50;
+}
+
+.no-photos.hidden {
+  display: none;
+}
+
+.no-photos-inner {
+  text-align: center;
+  opacity: 0.45;
+}
+
+.no-photos-inner svg {
+  display: block;
+  margin: 0 auto 1.5rem;
+  stroke: var(--gold-light);
+}
+
+.no-photos-inner p {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  line-height: 1.9;
+  color: var(--cream);
+}
+
+.no-photos-inner code {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.1em 0.45em;
+  border-radius: 3px;
+  font-size: 0.85em;
+  letter-spacing: 0.02em;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 480px) {
+
+  #btn-prev,
+  #btn-next {
+    opacity: 0.8;
+  }
+
+  .carousel-title {
+    bottom: 4rem;
+  }
+}

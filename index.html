@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Ana & Jorge · Sep 2025 — Our Wedding" />
+  <title>Ana & Jorge · Sep 2025</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@200;300&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+  <!-- Intro overlay -->
+  <div id="intro-overlay">
+    <div class="intro-content">
+      <p class="intro-date">Sep 2025</p>
+      <h1 class="intro-title">Ana & Jorge</h1>
+      <div class="intro-divider"></div>
+      <p class="intro-sub">Our Wedding</p>
+    </div>
+  </div>
+
+  <!-- Carousel -->
+  <div id="carousel" role="region" aria-label="Wedding photo carousel">
+
+    <!-- Slides container -->
+    <div id="slides-wrapper"></div>
+
+    <!-- Cinematic top gradient -->
+    <div class="gradient-top"></div>
+    <!-- Cinematic bottom gradient -->
+    <div class="gradient-bottom"></div>
+
+    <!-- Title -->
+    <div class="carousel-title">
+      <div class="carousel-title-row">
+        <span class="carousel-title-main">Ana &amp; Jorge</span>
+        <span class="carousel-title-dot">·</span>
+        <span class="carousel-title-date">Sep 2025</span>
+      </div>
+      <p class="carousel-subtitle">Gracias por hacer este día memorable</p>
+    </div>
+
+    <!-- Navigation -->
+    <button id="btn-prev" class="nav-btn" aria-label="Previous photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+        stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6" />
+      </svg>
+    </button>
+    <button id="btn-next" class="nav-btn" aria-label="Next photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+        stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6" />
+      </svg>
+    </button>
+
+    <!-- Slide counter -->
+    <div id="counter" class="counter" aria-live="polite">
+      <span id="counter-current">1</span>
+      <span class="counter-sep">/</span>
+      <span id="counter-total">1</span>
+    </div>
+
+    <!-- Dot indicators -->
+    <div id="dots" class="dots" role="tablist"></div>
+
+  </div>
+
+  <!-- No photos fallback -->
+  <div id="no-photos" class="no-photos hidden">
+    <div class="no-photos-inner">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
+        stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <circle cx="8.5" cy="8.5" r="1.5" />
+        <polyline points="21 15 16 10 5 21" />
+      </svg>
+      <p>Add your photos to the <code>photos/</code> folder,<br />then open <code>index.html</code> in a browser.</p>
+    </div>
+  </div>
+
+  <script src="js/carousel.js"></script>
+</body>
+
+</html>
