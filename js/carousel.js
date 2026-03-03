@@ -36,6 +36,7 @@
   let current = 0;
   let autoPlayTimer = null;
   let isTransitioning = false;
+  let isGalleryOpen = false;
 
   /* ----------------------------------------------------------
      DOM refs
@@ -46,6 +47,14 @@
   const counterTotal = document.getElementById('counter-total');
   const btnPrev = document.getElementById('btn-prev');
   const btnNext = document.getElementById('btn-next');
+  const btnGrid = document.getElementById('btn-grid');
+  const galleryOverlay = document.getElementById('gallery-overlay');
+  const galleryGrid = document.getElementById('gallery-grid');
+  const btnCloseGallery = document.getElementById('btn-close-gallery');
+  const btnMusic = document.getElementById('btn-music');
+  const bgMusic = document.getElementById('bg-music');
+  const iconPlay = document.getElementById('icon-music-play');
+  const iconPause = document.getElementById('icon-music-pause');
   const noPhotos = document.getElementById('no-photos');
   const carousel = document.getElementById('carousel');
 
@@ -64,6 +73,7 @@
     }
 
     buildSlides();
+    buildGallery();
     buildDots();
     updateCounter();
     bindEvents();
@@ -133,6 +143,57 @@
   }
 
   /* ----------------------------------------------------------
+     Gallery
+  ---------------------------------------------------------- */
+  function buildGallery() {
+    if (!galleryGrid) return;
+    
+    photos.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item' + (i === 0 ? ' active' : '');
+      item.addEventListener('click', () => {
+        goTo(i);
+        closeGallery();
+      });
+
+      const img = document.createElement('img');
+      img.src = src;
+      img.loading = 'lazy';
+      img.alt = `Thumbnail ${i + 1}`;
+
+      item.appendChild(img);
+      galleryGrid.appendChild(item);
+    });
+  }
+
+  function updateGalleryActive() {
+    if (!galleryGrid) return;
+    const items = galleryGrid.querySelectorAll('.gallery-item');
+    items.forEach((item, i) => item.classList.toggle('active', i === current));
+  }
+
+  function openGallery() {
+    if (isGalleryOpen) return;
+    isGalleryOpen = true;
+    galleryOverlay.classList.remove('hidden');
+    stopAutoPlay();
+    updateGalleryActive();
+    
+    // Scroll active item into view
+    const activeItem = galleryGrid.querySelector('.gallery-item.active');
+    if (activeItem) {
+      activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  function closeGallery() {
+    if (!isGalleryOpen) return;
+    isGalleryOpen = false;
+    galleryOverlay.classList.add('hidden');
+    startAutoPlay();
+  }
+
+  /* ----------------------------------------------------------
      Dots
   ---------------------------------------------------------- */
   function buildDots() {
@@ -177,6 +238,7 @@
 
     updateDots();
     updateCounter();
+    updateGalleryActive();
 
     setTimeout(() => { isTransitioning = false; }, TRANSITION_MS);
   }
@@ -202,9 +264,60 @@
   function bindEvents() {
     btnNext.addEventListener('click', () => { next(); startAutoPlay(); });
     btnPrev.addEventListener('click', () => { prev(); startAutoPlay(); });
+    if (btnGrid) btnGrid.addEventListener('click', openGallery);
+    if (btnCloseGallery) btnCloseGallery.addEventListener('click', closeGallery);
+
+    let isMusicPlaying = false;
+
+    function toggleMusic(forcePlay = null) {
+      if (!bgMusic) return;
+      
+      const shouldPlay = forcePlay !== null ? forcePlay : !isMusicPlaying;
+      
+      if (shouldPlay) {
+        bgMusic.play().then(() => {
+          isMusicPlaying = true;
+          iconPlay.style.display = 'none';
+          iconPause.style.display = 'block';
+        }).catch(e => {
+          console.log("Playback blocked by browser. Waiting for interaction.");
+        });
+      } else {
+        bgMusic.pause();
+        isMusicPlaying = false;
+        iconPlay.style.display = 'block';
+        iconPause.style.display = 'none';
+      }
+    }
+
+    if (btnMusic && bgMusic) {
+      btnMusic.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent the document listener from firing
+        toggleMusic();
+      });
+    }
+
+    // Auto-play attempt on start
+    toggleMusic(true);
+
+    // Fallback: Start music on first user interaction (click, scroll, or keypress)
+    const autoPlayOnInteraction = () => {
+      if (!isMusicPlaying) toggleMusic(true);
+      document.removeEventListener('click', autoPlayOnInteraction);
+      document.removeEventListener('keydown', autoPlayOnInteraction);
+      document.removeEventListener('touchstart', autoPlayOnInteraction);
+    };
+
+    document.addEventListener('click', autoPlayOnInteraction);
+    document.addEventListener('keydown', autoPlayOnInteraction);
+    document.addEventListener('touchstart', autoPlayOnInteraction);
 
     // Keyboard
     document.addEventListener('keydown', (e) => {
+      if (isGalleryOpen) {
+        if (e.key === 'Escape') closeGallery();
+        return;
+      }
       if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { next(); startAutoPlay(); }
       if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { prev(); startAutoPlay(); }
     });

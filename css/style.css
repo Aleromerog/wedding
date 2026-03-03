@@ -353,6 +353,116 @@ body {
   opacity: 0.4;
 }
 
+#btn-grid {
+  position: absolute;
+  top: 1.8rem;
+  left: clamp(1rem, 3vw, 2.5rem);
+  transform: none;
+  width: clamp(36px, 4vw, 44px);
+  height: clamp(36px, 4vw, 44px);
+}
+
+#btn-music {
+  position: absolute;
+  top: 1.8rem;
+  left: calc(clamp(1rem, 3vw, 2.5rem) + clamp(36px, 4vw, 44px) + 0.8rem);
+  transform: none;
+  width: clamp(36px, 4vw, 44px);
+  height: clamp(36px, 4vw, 44px);
+}
+
+/* ============================================================
+   Thumbnail Gallery
+   ============================================================ */
+.gallery-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+  transition: opacity 0.4s ease, visibility 0.4s;
+  visibility: visible;
+}
+
+.gallery-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.gallery-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem clamp(1rem, 3vw, 2.5rem);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gallery-header h2 {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+  color: var(--cream);
+  letter-spacing: 0.05em;
+}
+
+.gallery-header .nav-btn {
+  position: relative;
+  transform: none;
+  top: auto;
+  left: auto;
+  right: auto;
+  width: clamp(36px, 4vw, 44px);
+  height: clamp(36px, 4vw, 44px);
+}
+
+.gallery-grid {
+  flex: 1;
+  overflow-y: auto;
+  padding: clamp(1rem, 3vw, 2.5rem);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+  align-content: start;
+}
+
+@media (min-width: 768px) {
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+.gallery-item {
+  position: relative;
+  aspect-ratio: 1;
+  cursor: pointer;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.gallery-item:hover {
+  transform: scale(1.05);
+}
+
+.gallery-item.active {
+  border-color: var(--gold);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 /* ============================================================
    Dot Indicators
    ============================================================ */
