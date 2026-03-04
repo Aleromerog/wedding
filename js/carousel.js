@@ -21,9 +21,13 @@
      Leave it empty ([]) to use automatic detection via HTTP.
   ---------------------------------------------------------- */
   const MANUAL_PHOTO_LIST = [
-    // 'photos/001_ceremony.jpg',
-    // 'photos/002_kiss.jpg',
-    // 'photos/003_reception.jpg',
+    'photos/1(102de794).jpg',
+    'photos/1(108de794).jpg',
+    'photos/1(109de794).jpg',
+    'photos/1(112de794).jpg',
+    'photos/1(129de794).jpg',
+    'photos/1(132de794).jpg',
+    'photos/1(134de794).jpg',
   ];
 
   const AUTO_PLAY_MS = 5000;          // ms between slides
